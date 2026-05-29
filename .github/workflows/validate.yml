@@ -1,0 +1,83 @@
+name: Validate marketplace
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate marketplace.json
+        run: |
+          python - <<'PY'
+          import json, sys, pathlib
+          p = pathlib.Path('.claude-plugin/marketplace.json')
+          m = json.loads(p.read_text())
+          required = {'name', 'owner', 'plugins'}
+          missing = required - set(m)
+          assert not missing, f"marketplace.json missing: {missing}"
+          assert isinstance(m['owner'], dict) and 'name' in m['owner'], "owner.name required"
+          assert isinstance(m['plugins'], list) and m['plugins'], "plugins[] must be non-empty"
+          for plg in m['plugins']:
+              for k in ('name', 'source', 'description', 'version'):
+                  assert k in plg, f"plugin entry missing {k}: {plg}"
+          print(f"OK marketplace.json — {len(m['plugins'])} plugin(s)")
+          PY
+
+      - name: Validate each plugin.json
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          for p in pathlib.Path('plugins').glob('*/.claude-plugin/plugin.json'):
+              m = json.loads(p.read_text())
+              for k in ('name', 'description', 'version'):
+                  assert k in m, f"{p}: missing {k}"
+              print(f"OK {p}: {m['name']} v{m['version']}")
+          PY
+
+      - name: Versions match between marketplace.json and plugin.json
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          mkt = json.loads(pathlib.Path('.claude-plugin/marketplace.json').read_text())
+          for entry in mkt['plugins']:
+              src = pathlib.Path(entry['source']) / '.claude-plugin' / 'plugin.json'
+              plg = json.loads(src.read_text())
+              assert entry['version'] == plg['version'], (
+                  f"version mismatch for {entry['name']}: "
+                  f"marketplace={entry['version']} plugin={plg['version']}"
+              )
+              print(f"OK {entry['name']} version {plg['version']} consistent")
+          PY
+
+      - name: Validate SKILL.md frontmatter
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          fail = []
+          skill_dirs = list(pathlib.Path('plugins').glob('*/skills/*'))
+          assert skill_dirs, "No skills found under plugins/*/skills/*"
+          for d in skill_dirs:
+              s = d / 'SKILL.md'
+              if not s.exists():
+                  fail.append(f"{d}: missing SKILL.md")
+                  continue
+              text = s.read_text(encoding='utf-8')
+              if not text.startswith('---'):
+                  fail.append(f"{s}: no YAML frontmatter")
+                  continue
+              fm = text.split('---', 2)[1] if text.count('---') >= 2 else ''
+              if 'name:' not in fm:
+                  fail.append(f"{s}: frontmatter missing 'name:'")
+              if 'description:' not in fm:
+                  fail.append(f"{s}: frontmatter missing 'description:'")
+          if fail:
+              print('\n'.join(fail))
+              raise SystemExit(1)
+          print(f"OK {len(skill_dirs)} skill(s) validated")
+          PY

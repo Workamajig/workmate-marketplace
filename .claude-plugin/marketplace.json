@@ -1,0 +1,15 @@
+{
+  "name": "workmate-marketplace",
+  "owner": {
+    "name": "Workamajig",
+    "email": "greg@workamajig.com"
+  },
+  "plugins": [
+    {
+      "name": "workmate",
+      "source": "./plugins/workmate",
+      "description": "Workmate — a conversational AI layer for Workamajig. 44 skills covering project pulse, AR/AP, pipeline, time, expenses, briefs, and capture flows.",
+      "version": "0.1.0"
+    }
+  ]
+}
