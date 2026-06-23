@@ -126,19 +126,26 @@ Don't dump a menu. Recommend **one thing** based on what the user just said. Exp
 
 If the user's request genuinely spans multiple commands, pick the most urgent one first and mention the follow-up: "After that, we could also run `/price-check` — but let's start with cash."
 
-### Step 4 — Handle "what can you do?"
+### Step 4 — Handle "what can you do?" — show the visual home
 
-When the user asks for a general overview, organize by what matters to them — not a flat list. Use their agency context if available.
+When the user asks for a general overview ("what can you do," "help," "home," "I don't know where to start," or it's their first open-ended turn), **render the visual launcher** instead of listing commands as text. New users don't know what to type — show them.
 
-Group into five buckets and lead with the one most relevant to their stored headaches:
+**How to render it:**
 
-**Your money:** `/plan-payroll` · `/month-heads-up` · `/close-month` · `/price-check` · `/tax-prep` · `/invoice-chase` · `/cash-flow-snapshot`
-**Your pipeline:** `/call-list` · `/lead-triage` · `/run-campaign` · `/sales-brief` · `/quick-lead`
-**Your clients & projects:** `/customer-pulse-check` · `/crm-cleanup` · `/project-pulse` · `/project-deep-dive` · `/client-deep-dive` · `/review-contract` · `/handle-complaint` · `/change-order-prep`
-**Your day-to-day:** `/my-day` · `/log-meeting` · `/log-time` · `/file-expense` · `/approve-queue` · `/add-task` · `/end-of-week-close`
-**Your week / quarter:** `/monday-brief` · `/friday-brief` · `/quarterly-review` · `/business-pulse`
+1. Read the launcher template at `reference/launcher.html` (in this skill's folder).
+2. If you have agency context, personalize which bucket is highlighted: inject a one-line script tag **before** the template's own `<script>` setting the lead bucket — `<script>window.WORKMATE_LEAD_BUCKET='money'</script>` — using the key that matches the user's top headache: `money`, `pipeline`, `clients`, `day`, or `week`. If you have no context, omit it (no bucket is highlighted).
+3. Emit the result as an **HTML artifact** (Claude Desktop / claude.ai) so the user sees a clickable card grid. Each skill shows a "say" chip with its trigger phrase — the user copies the phrase and says it back to you.
+4. Add one short sentence of your own above or after the artifact, grounded in their context — e.g. "Cash is your stated headache, so I led with the money column — tap a chip or just tell me what's on your mind."
 
-Keep it to 2-3 sentences per bucket. End with: "What's on your mind? I'll get you to the right place."
+**Important:** the launcher is a menu, not an action. After it renders, the user will say one of the phrases — route that through Steps 1–3 as normal.
+
+**Text fallback** (only when artifacts aren't available — e.g. a plain terminal): group into five buckets, lead with the one matching their headache, 2-3 sentences each, then "What's on your mind? I'll get you to the right place."
+
+- **Your money:** `/plan-payroll` · `/month-heads-up` · `/close-month` · `/price-check` · `/tax-prep` · `/invoice-chase` · `/cash-flow-snapshot`
+- **Your pipeline:** `/call-list` · `/lead-triage` · `/run-campaign` · `/sales-brief` · `/quick-lead`
+- **Your clients & projects:** `/customer-pulse-check` · `/crm-cleanup` · `/project-pulse` · `/project-deep-dive` · `/client-deep-dive` · `/review-contract` · `/handle-complaint` · `/change-order-prep`
+- **Your day-to-day:** `/my-day` · `/log-meeting` · `/log-time` · `/file-expense` · `/approve-queue` · `/add-task` · `/end-of-week-close`
+- **Your week / quarter:** `/monday-brief` · `/friday-brief` · `/quarterly-review` · `/business-pulse`
 
 ### Step 5 — Permission-aware routing
 

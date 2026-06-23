@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Workmate</title>
+<style>
+  :root {
+    --bg: #ffffff; --surface: #f7f6f3; --card: #ffffff;
+    --text: #1a1a18; --muted: #6b6a64; --line: rgba(0,0,0,.10);
+    --accent: #3257a8; --accent-bg: #e9f0fb;
+    --pill: #f1efe8; --pill-text: #44443f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1f1e1c; --surface: #26251f; --card: #2a2925;
+      --text: #f2f1ec; --muted: #a9a89f; --line: rgba(255,255,255,.12);
+      --accent: #85b7eb; --accent-bg: #143257;
+      --pill: #38362f; --pill-text: #d8d6cc;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 28px 20px 40px; }
+  header { margin-bottom: 22px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .logo {
+    width: 38px; height: 38px; border-radius: 10px; background: var(--accent);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 17px; flex: none;
+  }
+  h1 { font-size: 21px; font-weight: 600; margin: 0; }
+  .tag { color: var(--muted); font-size: 14px; margin: 2px 0 0; }
+  .hint {
+    margin: 18px 0 22px; padding: 12px 14px; background: var(--accent-bg);
+    border-radius: 10px; font-size: 13.5px; color: var(--text);
+  }
+  .hint b { font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px 16px 12px;
+  }
+  .card.lead { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+  .ch { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+  .ch .ico { width: 26px; height: 26px; color: var(--accent); flex: none; }
+  .ch h2 { font-size: 14.5px; font-weight: 600; margin: 0; letter-spacing: .01em; }
+  .ch .badge {
+    margin-left: auto; font-size: 10.5px; font-weight: 600; color: var(--accent);
+    background: var(--accent-bg); padding: 2px 8px; border-radius: 20px;
+  }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { padding: 7px 0; border-top: 1px solid var(--line); }
+  li:first-child { border-top: none; }
+  .row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .skill { font-size: 13.5px; font-weight: 500; }
+  .desc { color: var(--muted); font-size: 12px; margin: 1px 0 0; }
+  .say {
+    flex: none; cursor: pointer; border: 1px solid var(--line); background: var(--pill);
+    color: var(--pill-text); font-size: 11.5px; padding: 3px 9px; border-radius: 7px;
+    white-space: nowrap; font-family: inherit; transition: background .12s;
+  }
+  .say:hover { background: var(--accent-bg); color: var(--accent); border-color: var(--accent); }
+  .say.copied { background: var(--accent); color: #fff; border-color: var(--accent); }
+  footer { margin-top: 24px; text-align: center; color: var(--muted); font-size: 13px; }
+  footer .go {
+    display: inline-block; margin-top: 6px; cursor: pointer; color: var(--accent);
+    font-weight: 600; border: 1px solid var(--accent); background: transparent;
+    padding: 7px 16px; border-radius: 9px; font-family: inherit; font-size: 13px;
+  }
+  footer .go:hover { background: var(--accent-bg); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">W</div>
+      <div>
+        <h1>Workmate</h1>
+        <p class="tag">Your Workamajig copilot — ask in plain language, get answers and actions.</p>
+      </div>
+    </div>
+    <div class="hint">Tap any <b>say</b> chip to copy its phrase, then type or say it to me. New here? <b>Say "get started"</b> and I'll set you up in five minutes.</div>
+  </header>
+  <div class="grid" id="grid" aria-label="Workmate skill buckets"></div>
+  <footer>
+    Not sure where to begin?
+    <br /><button class="go" data-say="what should I focus on">Ask: what should I focus on?</button>
+  </footer>
+</div>
+<script>
+const ICON = {
+  money: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+  pipeline: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>',
+  clients: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  day: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  week: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+};
+const BUCKETS = [
+  { key:'money', title:'Your money', items:[
+    { s:'Plan payroll', d:'Can we cover Friday?', say:'plan payroll' },
+    { s:'Invoice chase', d:'Who owes us, worth chasing', say:'invoice chase' },
+    { s:'Cash snapshot', d:'Cash now + 30/60/90 forecast', say:'cash flow snapshot' },
+    { s:'Close the month', d:'Month-end P&L + AR/AP', say:'close month' },
+  ]},
+  { key:'pipeline', title:'Your pipeline', items:[
+    { s:'Call list', d:'Top calls this week + openers', say:'call list' },
+    { s:'Lead triage', d:'Score the open pipeline', say:'lead triage' },
+    { s:'Sales brief', d:"What's billing, what's slipping", say:'sales brief' },
+    { s:'Run a campaign', d:'New-biz push when sales are flat', say:'run a campaign' },
+  ]},
+  { key:'clients', title:'Your clients & projects', items:[
+    { s:'Project pulse', d:'Over-budget / behind-schedule', say:'project pulse' },
+    { s:'Client deep-dive', d:'Full picture before a meeting', say:'client deep dive' },
+    { s:'Concentration', d:'Too dependent on one client?', say:'customer pulse check' },
+    { s:'Change order', d:'Math + narrative for scope creep', say:'change order prep' },
+  ]},
+  { key:'day', title:'Your day-to-day', items:[
+    { s:'My day', d:'Personal start-of-day brief', say:'my day' },
+    { s:'Log time', d:'Timesheet by conversation', say:'log time' },
+    { s:'File expense', d:'Snap a receipt, done', say:'file expense' },
+    { s:'Approve queue', d:'Walk approvals one by one', say:'approve queue' },
+  ]},
+  { key:'week', title:'Your week & quarter', items:[
+    { s:'Monday brief', d:'Start-of-week one-pager', say:'monday brief' },
+    { s:'Friday brief', d:'End-of-week recap', say:'friday brief' },
+    { s:'Business pulse', d:"How's the agency right now", say:'business pulse' },
+    { s:'Quarterly review', d:'Board-ready QBR', say:'quarterly review' },
+  ]},
+];
+const LEAD = (window.WORKMATE_LEAD_BUCKET || '').toLowerCase();
+const grid = document.getElementById('grid');
+BUCKETS.forEach(b => {
+  const lead = b.key === LEAD;
+  const card = document.createElement('div');
+  card.className = 'card' + (lead ? ' lead' : '');
+  card.innerHTML =
+    '<div class="ch">' + ICON[b.key] + '<h2>' + b.title + '</h2>' +
+      (lead ? '<span class="badge">Start here</span>' : '') + '</div>' +
+    '<ul>' + b.items.map(i =>
+      '<li><div class="row"><div><div class="skill">' + i.s + '</div>' +
+      '<div class="desc">' + i.d + '</div></div>' +
+      '<button class="say" data-say="' + i.say + '">say</button></div></li>'
+    ).join('') + '</ul>';
+  grid.appendChild(card);
+});
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-say]');
+  if (!btn) return;
+  const phrase = btn.getAttribute('data-say');
+  navigator.clipboard && navigator.clipboard.writeText(phrase);
+  const old = btn.textContent;
+  btn.classList.add('copied'); btn.textContent = 'copied "' + phrase + '"';
+  setTimeout(() => { btn.classList.remove('copied'); btn.textContent = old; }, 1400);
+});
+</script>
+</body>
+</html>

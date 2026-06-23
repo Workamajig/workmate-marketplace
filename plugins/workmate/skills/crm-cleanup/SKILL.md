@@ -61,5 +61,5 @@ Total open leads: N · Stale (30+ days): M · Stalled in proposal: K · Orphan: 
 
 ## Guardrails
 
-- **Don't update leads.** This is a recommendation list — the user runs through it and updates Workamajig themselves (or via the operational `add_update_lead` tool).
+- **Don't update leads.** This is a recommendation list — the user runs through it and updates Workamajig themselves (or via the operational `add_lead` / `add_opportunity` tools for new records).
 - **Suggest disposition, don't dictate.** A 60-day-stale $500K lead might be worth one more outreach. Surface the candidates; the user decides.
