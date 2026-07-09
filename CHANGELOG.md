@@ -4,6 +4,15 @@ All notable changes to the Workmate plugin are documented here. Format follows [
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-07-09
+
+### Added
+- `cfo-dashboard` — full agency CFO dashboard as a standalone HTML page: cash, AR/DSO, AP, customer concentration, project margins, utilization, and pipeline-vs-target, with urgent alerts, KPI cards, and prioritized actions.
+- `ceo-dashboard` — CEO co-pilot briefing as a standalone HTML page: client portfolio health, delivery & profitability, talent/utilization, pipeline momentum, and cash risk, ending in a prioritized action list that flags owner-personal vs delegate.
+
+### Notes
+- Both dashboards depend on MCP tools added to the C# in-process server (`WJAPI/api/MCP*.cs`): `get_utilization`, `get_project_margin`, `get_dso`, `get_financial_targets`, `get_client_health`. Deploy the server (tools + backing stored procedures) before or with this plugin release, or the skills will call tools that don't exist yet.
+
 ## [0.1.0] — 2026-05-29
 
 Initial public preview.
@@ -19,5 +28,6 @@ Initial public preview.
 - Pre-1.0 release — skill names, descriptions, and the catalog itself may still shift before 1.0.0.
 - Requires a configured Workamajig MCP connector. The plugin assumes the LLM can call `get_*` and `add_*` MCP tools backed by the C# in-process server in `WJAPI/api/MCP*.cs`.
 
-[Unreleased]: https://github.com/workamajig/workmate-marketplace/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/workamajig/workmate-marketplace/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/workamajig/workmate-marketplace/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/workamajig/workmate-marketplace/releases/tag/v0.1.0

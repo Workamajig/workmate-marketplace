@@ -1,7 +1,7 @@
 {
   "name": "workmate",
   "description": "A conversational AI layer for Workamajig. Read your data, capture work, and run multi-step agency workflows in natural language. Connects through the Workamajig MCP server (WJAPI/api/MCP*.cs); same data, same permissions, same audit trail as the Workamajig UI.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/workamajig/workmate-marketplace",
   "license": "TBD"
 }
