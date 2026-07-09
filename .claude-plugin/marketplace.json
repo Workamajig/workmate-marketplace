@@ -8,7 +8,7 @@
     {
       "name": "workmate",
       "source": "./plugins/workmate",
-      "description": "Workmate — a conversational AI layer for Workamajig. 46 skills covering project pulse, AR/AP, pipeline, time, expenses, briefs, executive dashboards, and capture flows.",
+      "description": "Workmate — a conversational AI layer for Workamajig. 47 skills covering project pulse, AR/AP, pipeline, time, expenses, briefs, executive & PM dashboards, and capture flows.",
       "version": "0.2.0"
     }
   ]
