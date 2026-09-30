@@ -44,7 +44,7 @@ Speak in terms of **what Claude will do for you** with the data in Workamajig, n
    Examples:
    - "Cash flow" → run `cash-flow-snapshot` (pulls `get_cash_position` + `get_cash_forecast` + `get_overdue_invoices`)
    - "Pipeline / new biz" → run `lead-triage` (pulls `get_pipeline_leads`)
-   - "Project health" → run `project-pulse` (pulls `get_projects_behind_schedule` + `get_projects_over_budget`)
+   - "Project health" → run `project-pulse` (pulls `get_projects_at_risk` for `behind_schedule` + `over_budget`)
    - "Month-end / books" → run `close-month` (pulls `get_corporate_pl` + `get_ap_aging` + `get_ar_aging`)
 
    Narrate what you're doing and why — this is the "aha" moment. Do not skip it to get to the interview faster.

@@ -34,7 +34,7 @@ Call in parallel, then reconcile. Tools return server-side `severity`/`flag` —
 
 1. `get_project_summary` (with `projectManager`) — the PM's active projects: status, budget vs. actuals (budget-burn %), % complete, billing status
 2. `get_project_margin` (with `projectManager`) — true profit per project + unbilled WIP + cost-vs-budget
-3. `get_projects_behind_schedule` + `get_projects_over_budget` + `get_projects_near_overbudget` (with `projectManager`) — the risk lists, pre-scoped to this PM (schedule health)
+3. `get_projects_at_risk` (with `projectManager`), once per `riskType` — `behind_schedule` + `over_budget` + `near_overbudget` — the risk lists, pre-scoped to this PM (schedule health)
 4. `get_items_to_approve` — the PM's own approvals queue (timesheets, expenses, vouchers); sort results oldest-first
 5. `get_utilization` + `get_resource_availability` — team load this week; utilization > 90% = over-allocated
 6. `get_assignments` (with `person`, `startDate`=today, `endDate`=+14d) — the PM's task deadlines for the next 14 days

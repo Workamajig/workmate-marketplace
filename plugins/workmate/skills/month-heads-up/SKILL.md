@@ -17,7 +17,7 @@ Read agency context first — use `glCompanyID` if scoped.
 1. `get_cash_forecast` — 30 and 60 day windows
 2. `get_ap_aging` — what's due in the next 30 days
 3. `get_pipeline_leads` — pipeline likely to close inside the window (use `estCloseDate` filter)
-4. `get_projects_near_overbudget` (operational MCP tool, optional) — projects about to bust
+4. `get_projects_at_risk` with `riskType="near_overbudget"` (operational MCP tool, optional) — projects about to bust
 5. `get_corporate_pl` — current MTD trend (optional; only if `acct_gl_pnl` is granted)
 
 ## Output

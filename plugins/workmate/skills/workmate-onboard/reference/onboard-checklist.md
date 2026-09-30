@@ -24,7 +24,7 @@ Run the matched recipe immediately after onboarding question 3. Don't wait for t
 | Cash flow / making payroll | `cash-flow-snapshot` | `get_cash_position`, `get_cash_forecast`, `get_overdue_invoices` |
 | AR / collections / chasing invoices | `invoice-chase` | `get_ar_aging`, `get_overdue_invoices` |
 | Pipeline / new biz / leads | `lead-triage` | `get_pipeline_leads` |
-| Project profitability / over-budget | `project-pulse` | `get_projects_over_budget`, `get_projects_behind_schedule`, `get_revenue_by_item` |
+| Project profitability / over-budget | `project-pulse` | `get_projects_at_risk` (`over_budget`, `behind_schedule`), `get_revenue_by_item` |
 | Client risk / concentration | `customer-pulse-check` | `get_customer_concentration`, `get_revenue_by_item` |
 | Month-end / books closing | `close-month` | `get_corporate_pl`, `get_ap_aging`, `get_ar_aging`, `get_transaction_register` |
 | Margin / pricing / what's selling | `price-check` | `get_revenue_by_item`, `get_corporate_pl` |

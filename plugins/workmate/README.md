@@ -84,7 +84,7 @@ These are the Workamajig MCP tools the skills call, all backed by `spApiAIGet*` 
 | `get_revenue_by_item` | `spApiAIGetRevenueByItem` | project assignment / `prjAccessAny` |
 
 Operational read tools (used across the drill-down, workflow, and brief skills):
-- `get_projects_over_budget`, `get_projects_near_overbudget`, `get_projects_behind_schedule`
+- `get_projects_at_risk` (`riskType` = `over_budget` | `near_overbudget` | `behind_schedule`)
 - `get_billing_status`, `get_project_summary`, `get_project_files`, `get_spec_sheets`
 - `get_action_log` — call with `projectNumber` for the broad project-wide view (includes related Estimates / Vouchers / Tasks), or with `entity` + `entityID` for a narrow record scope. Supported entities: Project, Contact, Company, Invoice, Vendor Invoice, Payment, Receipt, Lead, Opportunity.
 - `get_conversations` (entity-scoped via `entity` + `entityID` business id — Project, Opportunity, Company, Campaign, Voucher, Invoice, Contact; returns nested threads via tActivityLink)

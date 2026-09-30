@@ -4,6 +4,21 @@ All notable changes to the Workmate plugin are documented here. Format follows [
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-09-30
+
+### Changed
+- `get_projects_over_budget`, `get_projects_near_overbudget`, and `get_projects_behind_schedule` were merged server-side into a single `get_projects_at_risk` tool with a required `riskType` (`over_budget` | `near_overbudget` | `behind_schedule`). `project-pulse`, `pm-dashboard`, `ceo-dashboard`, `month-heads-up`, `workmate-onboard`, and the README now call `get_projects_at_risk` once per `riskType`. The old `threshold` argument is gone; severity cutoffs are server-side only.
+
+### Added
+- `get_project_summary` / `get_projects_at_risk` rows now carry `budgetPct`, `daysLate`, `lateTaskCount`, and `lastActivityDate` (latest time entry). `project-pulse` maps its Budget %, Days late, and Last activity columns straight to them instead of deriving them.
+
+### Fixed
+- `near_overbudget` now means 85–100% of budget consumed, which is what `project-pulse` always described. The server had been flagging projects whose margin was under 10% of budget. It no longer overlaps `over_budget`.
+- `behind_schedule` now flags projects with an open, tracked task past its planned completion date. The server had been matching tasks that were already complete.
+
+### Notes
+- Requires the matching server release: `get_projects_at_risk` in `WJAPI/api/MCPHandler.cs` plus the updated `spApiAIProjectGetSummary`. Earlier servers only expose the three old tool names.
+
 ## [0.2.0] — 2026-07-09
 
 ### Added

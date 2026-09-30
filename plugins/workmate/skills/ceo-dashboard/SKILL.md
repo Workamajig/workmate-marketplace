@@ -25,7 +25,7 @@ Call in parallel, then reconcile. Every tool returns server-side `severity`/`fla
 2. `get_client_health` — per-client health matrix: revenue & volume trend, slow-pay signal, margin, scope creep (change orders + over-budget), severity per client
 3. `get_customer_concentration` — top-client revenue share + HHI trend (pair with client_health to spot concentration + risk)
 4. `get_project_margin` — per-project profit, at-risk vs top performers
-5. `get_projects_behind_schedule` + `get_projects_over_budget` — delivery risk
+5. `get_projects_at_risk` (`riskType="behind_schedule"` + `riskType="over_budget"`) — delivery risk
 6. `get_utilization` — agency + team/person billable utilization (flags <65 under-used, >90 burnout)
 7. `get_pipeline_leads` + `get_financial_targets` — weighted pipeline and next-quarter revenue target for coverage
 8. `get_cash_position` + `get_cash_forecast` + `get_dso` — cash now, 30/60/90 projection, collections speed
